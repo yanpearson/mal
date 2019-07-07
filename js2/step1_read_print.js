@@ -10,13 +10,18 @@ function eval(expr) {
 }
 
 function print(expr) {
-  return prStr(expr);
+  return prStr(expr, true);
 }
 
 function rep(expr) {
-  return `${print(
-    eval(
-      read(expr)))}\n`;
+  try {
+    return `${print(
+      eval(
+        read(expr)))}\n`;
+  }
+  catch (e) {
+    return `${e.message}\n`;
+  }
 }
 
 const prompt = 'user> ';

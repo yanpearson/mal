@@ -1,4 +1,4 @@
-const { MalList, MalNumber, MalSymbol } = require('./types');
+const { MalList, MalNumber, MalSymbol, MalBoolean, MalString } = require('./types');
 
 function Reader(tokens) {
   let _tokens = tokens;
@@ -48,13 +48,21 @@ function readList(reader) {
   reader.next();
   const list = [];
   let token = reader.peek();
-  while (token && token !== ')') {
+  let balanced = false;
+  while (token) {
     list.push(
       readForm(reader)
     );
+    if (token === ')') {
+      balanced = true;
+      break;
+    }
     token = reader.peek();
   }
-  return MalList.from(list);
+  if (!balanced) {
+    throw new Error('(EOF|end of input|unbalanced).');
+  }
+  return MalList.from(list.slice(0, -1));
 }
 
 function readAtom(reader) {
@@ -62,6 +70,13 @@ function readAtom(reader) {
   // Numeric
   if (MalNumber.canParse(token)) {
     return MalNumber.parse(token);
+  }
+  // Boolean
+  if (MalBoolean.canParse(token)) {
+    return MalBoolean.parse(token);
+  }
+  if (MalString.canParse(token)) {
+    return MalString.parse(token);
   }
   // Symbol
   return MalSymbol.parse(token);
