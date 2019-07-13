@@ -1,4 +1,4 @@
-const { MalList, MalNumber, MalSymbol, MalBoolean, MalString } = require('./types');
+const { NIL, MalList, MalNumber, MalSymbol, MalBoolean, MalString } = require('./types');
 
 function Reader(tokens) {
   let _tokens = tokens;
@@ -67,6 +67,10 @@ function readList(reader) {
 
 function readAtom(reader) {
   const token = reader.next();
+  // nil
+  if ('nil' === token) {
+    return NIL;
+  }
   // Numeric
   if (MalNumber.canParse(token)) {
     return MalNumber.parse(token);

@@ -1,5 +1,5 @@
 // Nil
-const NIL = Symbol.for('nil');
+const NIL = null;
 
 // List
 function isList(obj) {

@@ -1,6 +1,9 @@
-const { MalList, MalNumber, MalSymbol, MalBoolean, MalString } = require('./types');
+const { NIL, MalList, MalNumber, MalSymbol, MalBoolean, MalString } = require('./types');
 
 function prStr(expr, printReadably) {
+  if (NIL === expr) {
+    return "nil";
+  }
   if (MalSymbol.isSymbol(expr)) {
     return Symbol.keyFor(expr);
   }
@@ -24,6 +27,9 @@ function prStr(expr, printReadably) {
     const str = expr.map(e => prStr(e))
       .join(' ');
     return '(' + str + ')';
+  }
+  if ('function' === typeof(expr)) {
+    return '#<function>';
   }
   throw new Error(`Unable to call 'prStr' on expression: ${expr}`);
 }

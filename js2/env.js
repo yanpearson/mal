@@ -1,7 +1,13 @@
-const { nil } = require('./types');
+const { NIL } = require('./types');
 
-function Env(outer) {
+function Env(outer, binds, exprs) {
   const env = { };
+
+  if (binds && exprs) {
+    for (let i = 0; i < binds.length; i++) {
+      set(binds[i], exprs[i]);
+    }
+  }
 
   function set(key, value) {
     env[key] = value;
@@ -10,15 +16,15 @@ function Env(outer) {
   function find(key) {
     const value = env[key];
 
-    if (value) {
+    if (value === 0 || value) {
       return env;
     }
 
-    if (!value && outer !== null) {
+    if (value !== 0 && !value && outer !== null) {
       return outer.find(key);
     }
 
-    return nil;
+    return NIL;
   }
 
   function get(key) {
