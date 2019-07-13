@@ -60,7 +60,7 @@ function eval(ast, env) {
       const predicate = ast[1];
       const predicateResult = eval(predicate, env);
 
-      if (predicateResult || predicateResult === 0) {
+      if (predicateResult || predicateResult === '' || predicateResult === 0) {
         return eval(ast[2], env);
       }
 

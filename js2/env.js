@@ -16,11 +16,11 @@ function Env(outer, binds, exprs) {
   function find(key) {
     const value = env[key];
 
-    if (value === 0 || value) {
+    if (value !== undefined) {
       return env;
     }
 
-    if (value !== 0 && !value && outer !== null) {
+    if (outer) {
       return outer.find(key);
     }
 
