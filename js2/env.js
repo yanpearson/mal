@@ -37,10 +37,17 @@ function Env(outer, binds, exprs) {
     throw new Error(`${Symbol.keyFor(key)} not found.`);
   }
 
+  function dump() {
+    for(let key of Object.getOwnPropertySymbols(env)) {
+      console.log(`${Symbol.keyFor(key)}: ${env[key]}`);
+    }
+  }
+
   return Object.freeze({
     set,
     find,
     get,
+    dump,
   });
 }
 
