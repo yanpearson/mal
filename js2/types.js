@@ -1,3 +1,6 @@
+const MALTYPE = Symbol("_MALTYPE");
+const MALATOMTYPE = Symbol("_MALATOM");
+
 // Nil
 const NIL = null;
 
@@ -111,6 +114,29 @@ const MalString = Object.freeze({
   parse: parseString,
 });
 
+// Atom
+const MalAtom = function Atom(value) {
+  let _value = value;
+
+  function get() {
+    return _value;
+  }
+
+  function set(value) {
+    _value = value;
+  }
+
+  return Object.freeze({
+    [MALTYPE]: MALATOMTYPE,
+    get,
+    set,
+  });
+}
+
+MalAtom.isAtom = x => {
+  return (x && x[MALTYPE] && x[MALTYPE] === MALATOMTYPE) || false;
+}
+
 module.exports = Object.freeze({
   NIL,
   MalList,
@@ -118,4 +144,5 @@ module.exports = Object.freeze({
   MalSymbol,
   MalBoolean,
   MalString,
+  MalAtom,
 });

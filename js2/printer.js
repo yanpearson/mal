@@ -1,4 +1,4 @@
-const { NIL, MalList, MalNumber, MalSymbol, MalBoolean, MalString } = require('./types');
+const { NIL, MalList, MalNumber, MalSymbol, MalBoolean, MalString, MalAtom } = require('./types');
 
 function prStr(expr, printReadably) {
   if (NIL === expr) {
@@ -27,6 +27,9 @@ function prStr(expr, printReadably) {
     const str = expr.map(e => prStr(e))
       .join(' ');
     return '(' + str + ')';
+  }
+  if (MalAtom.isAtom(expr)) {
+    return `(atom ${expr.get()})`;
   }
   if ('function' === typeof(expr)) {
     return '#<function>';
