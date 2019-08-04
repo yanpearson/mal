@@ -1,6 +1,6 @@
 const { NIL, MalList, MalNumber, MalSymbol, MalBoolean, MalString, MalAtom } = require('./types');
 
-function prStr(expr, printReadably) {
+function prStr(expr, printReadably = true) {
   if (NIL === expr) {
     return "nil";
   }
