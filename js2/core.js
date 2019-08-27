@@ -68,7 +68,7 @@ ns[Symbol.for('swap!')] = (x, y, ...zs) => {
   return result;
 };
 
-ns[Symbol.for('cons')] = (x, xs = []) => x ? [x, ...xs] : xs;
+ns[Symbol.for('cons')] = (x, xs = []) => (x !== NIL) ? [x, ...xs] : xs;
 ns[Symbol.for('concat')] = (...xs) => xs.reduce((acc, cur) => [...acc, ...cur], []);
 
 module.exports = Object.freeze({

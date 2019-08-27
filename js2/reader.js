@@ -41,11 +41,28 @@ function tokenize(str) {
 }
 
 function readForm(reader) {
-  return reader.peek() === '(' ? readList(reader) : readAtom(reader);
+  switch (reader.peek()) {
+    case '(': 
+      reader.next();
+      return readList(reader);
+    case '\'':
+      reader.next();
+      return MalList.from([MalSymbol.parse('quote'), readForm(reader)]);
+    case '`': 
+      reader.next();
+      return MalList.from([MalSymbol.parse('quasiquote'), readForm(reader)]);
+    case '~': 
+      reader.next();
+      return MalList.from([MalSymbol.parse('unquote'), readForm(reader)]);
+    case '~@': 
+      reader.next();
+      return MalList.from([MalSymbol.parse('splice-unquote'), readForm(reader)]);
+    default:
+      return readAtom(reader);
+  }
 }
 
 function readList(reader) {
-  reader.next();
   const list = [];
   let token = reader.peek();
   let balanced = false;

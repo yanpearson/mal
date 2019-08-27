@@ -40,6 +40,8 @@ function Env(outer, binds, exprs) {
   function dump() {
     for(let key of Object.getOwnPropertySymbols(env)) {
       console.log(`${Symbol.keyFor(key)}: ${env[key]}`);
+      console.log(`isUserFunction: ${(env[key]).isUserFn || false} isMacro: ${(env[key]).isMacro || false}`);
+      console.log('==========');
     }
   }
 
