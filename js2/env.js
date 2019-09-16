@@ -1,4 +1,4 @@
-const { NIL } = require('./types');
+const { NIL, MalError } = require('./types');
 
 function Env(outer, binds, exprs) {
   const env = { };
@@ -34,7 +34,7 @@ function Env(outer, binds, exprs) {
       return env[key];
     }
 
-    throw new Error(`${Symbol.keyFor(key)} not found.`);
+    throw MalError({  message: `'${Symbol.keyFor(key)}' not found` });
   }
 
   function dump() {

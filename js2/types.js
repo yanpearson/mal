@@ -1,5 +1,6 @@
-const MALTYPE = Symbol("_MALTYPE");
-const MALATOMTYPE = Symbol("_MALATOM");
+const MALTYPE = Symbol("__MALTYPE");
+const MALATOMTYPE = Symbol("__MALATOM");
+const MALERRORTYPE = Symbol("__MALERROR");
 
 // Nil
 const NIL = null;
@@ -115,7 +116,7 @@ const MalString = Object.freeze({
 });
 
 // Atom
-const MalAtom = function Atom(value) {
+const MalAtom = function createAtom(value) {
   let _value = value;
 
   function get() {
@@ -137,6 +138,20 @@ MalAtom.isAtom = x => {
   return (x && x[MALTYPE] && x[MALTYPE] === MALATOMTYPE) || false;
 }
 
+// Error
+const MalError = function createError({ throwedValue, message }) {
+  const err = new Error(message || `Exception: ${throwedValue}`);
+
+  err[MALTYPE] = MALERRORTYPE;
+  err.throwedValue = throwedValue;
+
+  return err;
+}
+
+MalError.isError = x => {
+  return (x && x[MALTYPE] && x[MALTYPE] === MALERRORTYPE) || false;
+}
+
 module.exports = Object.freeze({
   NIL,
   MalList,
@@ -145,4 +160,5 @@ module.exports = Object.freeze({
   MalBoolean,
   MalString,
   MalAtom,
+  MalError,
 });
